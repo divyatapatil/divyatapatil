@@ -1,0 +1,30 @@
+CREATE DATABASE LibraryDB;
+USE LibraryDB;
+
+CREATE TABLE Books (
+    BookID INT PRIMARY KEY AUTO_INCREMENT,
+    Title VARCHAR(255) NOT NULL,
+    Author VARCHAR(100),
+    Genre VARCHAR(50),
+    PublishedYear INT,
+    Quantity INT DEFAULT 1
+);
+
+CREATE TABLE Members (
+    MemberID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Phone VARCHAR(15),
+    JoinDate DATE DEFAULT CURDATE()
+);
+
+CREATE TABLE BorrowedBooks (
+    BorrowID INT PRIMARY KEY AUTO_INCREMENT,
+    BookID INT,
+    MemberID INT,
+    BorrowDate DATE DEFAULT CURDATE(),
+    ReturnDate DATE,
+    Status ENUM('Borrowed', 'Returned') DEFAULT 'Borrowed',
+    FOREIGN KEY (BookID) REFERENCES Books(BookID) ON DELETE CASCADE,
+    FOREIGN KEY (MemberID) REFERENCES Members(MemberID) ON DELETE CASCADE
+);
